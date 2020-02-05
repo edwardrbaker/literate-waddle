@@ -11,13 +11,13 @@ namespace StringCalculator.Domain.Services
             if (string.IsNullOrEmpty(input)) { return 0; }
             var numbers = input.Split(',', '\n');
 
-            int runningTotal = 0;
+            int result = 0;
             foreach(var number in numbers)
             {
-                runningTotal += int.Parse(number);
+                result += int.Parse(number);
             }
 
-            return runningTotal;
+            return result;
         }
     }
 
