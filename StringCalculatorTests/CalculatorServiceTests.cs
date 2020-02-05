@@ -38,5 +38,18 @@ namespace StringCalculatorTests
             // Assert
             Assert.AreEqual(1, result);
         }
+
+        [Test]
+        public void Add_InputTwoNumbers_ReturnsSum()
+        {
+            // Arrange
+            var input = "1,2";
+
+            // Act
+            var result = _calculator.Add(input);
+
+            // Assert
+            Assert.AreEqual(3, result);
+        }
     }
 }
