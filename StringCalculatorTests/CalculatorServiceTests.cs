@@ -101,5 +101,15 @@ namespace StringCalculatorTests
 
             Assert.Throws<ArgumentOutOfRangeException>(() => _calculator.Add(input), "negatives not allowed: -2,-4");
         }
+
+        [Test]
+        public void Add_LargeNumbersIgnored_ReturnSum()
+        {
+            var input = "1,2,1001";
+
+            var result = _calculator.Add(input);
+
+            Assert.AreEqual(3, result);
+        }
     }
 }

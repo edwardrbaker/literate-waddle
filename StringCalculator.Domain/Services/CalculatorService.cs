@@ -6,6 +6,8 @@ namespace StringCalculator.Domain.Services
 {
     public class CalculatorService : ICalculatorService
     {
+        private readonly int _maxNumber = 1000;
+
         public int Add(string input)
         {
             if (string.IsNullOrEmpty(input)) { return 0; }
@@ -20,7 +22,7 @@ namespace StringCalculator.Domain.Services
                 throw new ArgumentOutOfRangeException("negatives not allowed: " + negs);
             }
 
-            return numbers.Sum();
+            return numbers.Where(x => x <= _maxNumber).Sum();
         }
 
         private char[] GetDelimiters(string input)
@@ -42,7 +44,6 @@ namespace StringCalculator.Domain.Services
 
         private List<int> ConvertList(string[] numbers)
         {
-            // not covered in the kata? very big (or small) numbers might? break due to int size
             return new List<string>(
                 numbers
             ).Select(s => { int i; return int.TryParse(s, out i) ? i : (int?)null;  })
