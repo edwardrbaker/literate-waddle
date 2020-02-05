@@ -4,20 +4,30 @@ namespace StringCalculator.Domain.Services
 {
     public class CalculatorService : ICalculatorService
     {
-        // per kata, we should assume the input is valid and not test
-        // otherwise I'd have added some additional bounds testing on `input`
         public int Add(string input)
         {
             if (string.IsNullOrEmpty(input)) { return 0; }
-            var numbers = input.Split(',', '\n');
+
+            var delimiter = GetDelimiter(input);
+
+            var numbers = input.Split(delimiter, '\n');
 
             int result = 0;
             foreach(var number in numbers)
             {
-                result += int.Parse(number);
+                int.TryParse(number, out var parsedValue);
+                result += parsedValue;
             }
 
             return result;
+        }
+
+        private char GetDelimiter(string input)
+        {
+            if (!input.StartsWith("//")) return ',';
+
+            var firstLine = input.Split('\n')[0];
+            return firstLine.Trim('/').ToCharArray()[0];
         }
     }
 

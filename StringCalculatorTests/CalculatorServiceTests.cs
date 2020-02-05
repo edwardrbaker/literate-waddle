@@ -74,5 +74,15 @@ namespace StringCalculatorTests
 
             Assert.AreEqual(6, result);
         }
+
+        [Test]
+        public void Add_UseCustomDelimiter_ReturnsSum()
+        {
+            var input = "//;\n1;2;";
+
+            var result = _calculator.Add(input);
+
+            Assert.AreEqual(3, result);
+        }
     }
 }
