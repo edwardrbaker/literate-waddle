@@ -11,18 +11,9 @@ namespace StringCalculator.Domain.Services
         public int Add(string input)
         {
             if (string.IsNullOrEmpty(input)) { return 0; }
-
-            // this feels gross
-            if (input.StartsWith("//["))
-            {
-                var limitLine = input.Split('\n')[0];
-                var longDelimiter = limitLine.Replace("//[", "").Replace("]", "");
-                input = input.Replace(limitLine, "").Replace(longDelimiter, ",");
-            }
-
-            var delimiters = GetDelimiters(input);
-
-            var numbers = ConvertList(input.Split(delimiters));
+            
+            var inputNormalized = NormalizeString(input);
+            var numbers = ConvertList(inputNormalized);
 
             if (numbers.Any(x => x < 0))
             {
@@ -33,22 +24,29 @@ namespace StringCalculator.Domain.Services
             return numbers.Where(x => x <= _maxNumber).Sum();
         }
 
-        private char[] GetDelimiters(string input)
+        /* 
+         * Normalize the input string so that all delimiters will be turned into simple commas
+         */
+        private string[] NormalizeString(string input)
         {
-            List<char> delimResult = new List<char> { '\n' }; // this will always be a delimiter
-
-            // if the input string does not have the // to denote a custom delimiter, add commas and return
-            if (!input.StartsWith("//"))
+            // check for custom delim string
+            if (input.StartsWith("//["))
             {
-                delimResult.Add(',');
-                return delimResult.ToArray();
+                var limitLine = input.Split('\n')[0];
+                var longDelimiter = limitLine.Replace("//[", "").Replace("]", "");
+                input = input.Replace(limitLine, "").Replace(longDelimiter, ",");
+            }
+            else if (input.StartsWith("//"))
+            {
+                var firstLine = input.Split('\n')[0];
+                var delimiter = firstLine.Trim('/');
+                input = input.Replace(delimiter, ",");
             }
 
-            var firstLine = input.Split('\n')[0];
+            // newlines should be delimiters
+            input = input.Replace("\n", ",");
 
-            delimResult.Add(firstLine.Trim('/').ToCharArray()[0]);
-
-            return delimResult.ToArray();
+            return input.Split(',');
         }
 
         private List<int> ConvertList(string[] numbers)
