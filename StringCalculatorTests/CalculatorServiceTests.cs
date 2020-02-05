@@ -4,7 +4,7 @@ using StringCalculator.Domain.Services;
 namespace StringCalculatorTests
 {
     [TestFixture]
-    public class Tests
+    public class CalculatorServiceTests
     {
         private ICalculatorService _calculator;
 

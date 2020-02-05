@@ -17,15 +17,12 @@ namespace StringCalculator.Domain.Services
                 return result;
             }
 
-            if (numbers.Length == 2)
+            int runningTotal = 0;
+            foreach(var number in numbers)
             {
-                int.TryParse(numbers[0], out int firstNumber);
-                int.TryParse(numbers[1], out int secondNumber);
-
-                return firstNumber + secondNumber;
+                runningTotal += int.Parse(number);
             }
-
-            throw new ArithmeticException("wee");
+            return runningTotal;
         }
     }
 
