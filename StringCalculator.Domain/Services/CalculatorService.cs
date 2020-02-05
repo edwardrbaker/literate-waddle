@@ -10,9 +10,9 @@ namespace StringCalculator.Domain.Services
         {
             if (string.IsNullOrEmpty(input)) { return 0; }
 
-            var delimiter = GetDelimiter(input);
+            var delimiters = GetDelimiters(input);
 
-            var numbers = ConvertList(input.Split(delimiter, '\n'));
+            var numbers = ConvertList(input.Split(delimiters));
 
             if (numbers.Any(x => x < 0))
             {
@@ -23,16 +23,26 @@ namespace StringCalculator.Domain.Services
             return numbers.Sum();
         }
 
-        private char GetDelimiter(string input)
+        private char[] GetDelimiters(string input)
         {
-            if (!input.StartsWith("//")) return ',';
+            List<char> delimResult = new List<char> { '\n' }; // this will always be a delimiter
+
+            // if the input string does not have the // to denote a custom delimiter, add commas and return
+            if (!input.StartsWith("//"))
+            {
+                delimResult.Add(',');
+                return delimResult.ToArray();
+            }
 
             var firstLine = input.Split('\n')[0];
-            return firstLine.Trim('/').ToCharArray()[0];
+            delimResult.Add(firstLine.Trim('/').ToCharArray()[0]);
+
+            return delimResult.ToArray();
         }
 
         private List<int> ConvertList(string[] numbers)
         {
+            // not covered in the kata? very big (or small) numbers might? break due to int size
             return new List<string>(
                 numbers
             ).Select(s => { int i; return int.TryParse(s, out i) ? i : (int?)null;  })
