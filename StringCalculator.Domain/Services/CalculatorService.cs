@@ -45,7 +45,6 @@ namespace StringCalculator.Domain.Services
             }
 
             var firstLine = input.Split('\n')[0];
-            var delimiter = firstLine.Trim('/');
 
             delimResult.Add(firstLine.Trim('/').ToCharArray()[0]);
 

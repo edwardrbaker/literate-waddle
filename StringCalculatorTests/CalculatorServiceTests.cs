@@ -121,5 +121,15 @@ namespace StringCalculatorTests
 
             Assert.AreEqual(6, result);
         }
+
+        [Test]
+        public void Add_SupportWeirdDelimiters_ReturnSUm()
+        {
+            var input = "//[.#.2,&]\n1,2.#.2,&3,4,1004";
+
+            var result = _calculator.Add(input);
+
+            Assert.AreEqual(10, result);
+        }
     }
 }
