@@ -4,7 +4,7 @@ using StringCalculator.Domain.Services;
 namespace StringCalculatorTests
 {
     [TestFixture]
-    public class Tests
+    public class CalculatorServiceTests
     {
         private ICalculatorService _calculator;
 
@@ -50,6 +50,19 @@ namespace StringCalculatorTests
 
             // Assert
             Assert.AreEqual(3, result);
+        }
+
+        [Test]
+        public void Add_InputMultipleNumbers_ReturnsSum()
+        {
+            // Arrange
+            var input = "1,2,3,4,5,6,7,8,9,10";
+
+            // Act
+            var result = _calculator.Add(input);
+
+            // Assert
+            Assert.AreEqual(55, result);
         }
     }
 }
