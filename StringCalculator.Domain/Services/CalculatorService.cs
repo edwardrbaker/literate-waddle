@@ -12,6 +12,14 @@ namespace StringCalculator.Domain.Services
         {
             if (string.IsNullOrEmpty(input)) { return 0; }
 
+            // this feels gross
+            if (input.StartsWith("//["))
+            {
+                var limitLine = input.Split('\n')[0];
+                var longDelimiter = limitLine.Replace("//[", "").Replace("]", "");
+                input = input.Replace(limitLine, "").Replace(longDelimiter, ",");
+            }
+
             var delimiters = GetDelimiters(input);
 
             var numbers = ConvertList(input.Split(delimiters));
@@ -37,6 +45,8 @@ namespace StringCalculator.Domain.Services
             }
 
             var firstLine = input.Split('\n')[0];
+            var delimiter = firstLine.Trim('/');
+
             delimResult.Add(firstLine.Trim('/').ToCharArray()[0]);
 
             return delimResult.ToArray();

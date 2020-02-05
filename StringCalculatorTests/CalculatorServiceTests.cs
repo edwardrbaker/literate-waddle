@@ -111,5 +111,15 @@ namespace StringCalculatorTests
 
             Assert.AreEqual(3, result);
         }
+
+        [Test]
+        public void Add_SupportLargeDelimiters_ReturnSum()
+        {
+            var input = "//[,,,]\n1,,,2,,,3";
+
+            var result = _calculator.Add(input);
+
+            Assert.AreEqual(6, result);
+        }
     }
 }
