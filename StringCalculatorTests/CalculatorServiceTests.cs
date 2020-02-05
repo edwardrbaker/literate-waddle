@@ -123,9 +123,19 @@ namespace StringCalculatorTests
         }
 
         [Test]
-        public void Add_SupportWeirdDelimiters_ReturnSUm()
+        public void Add_SupportWeirdDelimiters_ReturnSum()
         {
             var input = "//[.#.2,&]\n1,2.#.2,&3,4,1004";
+
+            var result = _calculator.Add(input);
+
+            Assert.AreEqual(10, result);
+        }
+
+        [Test]
+        public void Add_MultipleCustomDelimiters_ReturnsSum()
+        {
+            var input = "//[*][%]\n1*2%3\n4";
 
             var result = _calculator.Add(input);
 

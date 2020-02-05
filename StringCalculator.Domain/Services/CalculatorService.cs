@@ -33,8 +33,16 @@ namespace StringCalculator.Domain.Services
             if (input.StartsWith("//["))
             {
                 var limitLine = input.Split('\n')[0];
-                var longDelimiter = limitLine.Replace("//[", "").Replace("]", "");
-                input = input.Replace(limitLine, "").Replace(longDelimiter, ",");
+                limitLine = limitLine.Replace("//", "");
+
+                var openBrackets = limitLine.Split('[');
+                foreach(var p in openBrackets)
+                {
+                    if (string.IsNullOrEmpty(p)) continue;
+
+                    var delim = p.Substring(0, p.IndexOf(']'));
+                    input = input.Replace(delim, ",");
+                }
             }
             else if (input.StartsWith("//"))
             {
