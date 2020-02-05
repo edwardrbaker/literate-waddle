@@ -9,7 +9,7 @@ namespace StringCalculator.Domain.Services
         public int Add(string input)
         {
             if (string.IsNullOrEmpty(input)) { return 0; }
-            var numbers = input.Split(',');
+            var numbers = input.Split(',', '\n');
 
             int runningTotal = 0;
             foreach(var number in numbers)
