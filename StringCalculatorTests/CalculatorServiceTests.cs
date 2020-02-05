@@ -64,5 +64,15 @@ namespace StringCalculatorTests
             // Assert
             Assert.AreEqual(55, result);
         }
+
+        [Test]
+        public void Add_UseNewlineDelimeter_ReturnsSum()
+        {
+            var input = "1\n2,3";
+
+            var result = _calculator.Add(input);
+
+            Assert.AreEqual(6, result);
+        }
     }
 }
