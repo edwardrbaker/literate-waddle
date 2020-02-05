@@ -6,7 +6,9 @@ namespace StringCalculator.Domain.Services
     {
         public int Add(string input)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(input)) { return 0; }
+
+            throw new ArithmeticException("wee");
         }
     }
 
