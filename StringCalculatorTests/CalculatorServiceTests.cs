@@ -25,5 +25,18 @@ namespace StringCalculatorTests
 
             Assert.AreEqual(0, result);
         }
+
+        [Test]
+        public void Add_InputOneNumber_ReturnSameNumber()
+        {
+            // Arrange
+            var input = "1";
+
+            // Act
+            var result = _calculator.Add(input);
+
+            // Assert
+            Assert.AreEqual(1, result);
+        }
     }
 }
