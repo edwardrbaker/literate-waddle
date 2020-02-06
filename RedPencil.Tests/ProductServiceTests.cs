@@ -25,5 +25,16 @@ namespace RedPencil.Tests
 
             Assert.AreEqual(false, isProductRedPencil);
         }
+
+        [Test]
+        public void IsProductRedPencil_PriceReducedByFivePercent_Yes()
+        {
+            // arrange
+            var product = new Product { OriginalPrice = 15.00, CurrentPrice = 14.25 };
+
+            var redPencil = _productService.IsProductRedPencil(product);
+
+            Assert.AreEqual(true, redPencil);
+        }
     }
 }
