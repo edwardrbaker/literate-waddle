@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace RedPencil.Entity
+﻿namespace RedPencil.Entity
 {
     public class Product
     {

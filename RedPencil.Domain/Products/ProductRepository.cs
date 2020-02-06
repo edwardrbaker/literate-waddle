@@ -14,10 +14,16 @@ namespace RedPencil.Domain.Products
                 new Product {Id = 1, Name = "Yeti"}
             };
         }
+
+        public Product GetProductById(int i)
+        {
+            return new Product { Id = i };
+        }
     }
 
     public interface IProductRepository
     {
         List<Product> GetAllProducts();
+        Product GetProductById(int i);
     }
 }
