@@ -51,7 +51,7 @@ namespace RedPencil.Tests
                 {
                     new PriceHistory
                     {
-                        LastDateChange = DateTimeOffset.Now.AddDays(-30),
+                        DateStart = DateTimeOffset.Now.AddDays(-30),
                         Price = 13.00
                     }
                 }
@@ -75,7 +75,7 @@ namespace RedPencil.Tests
                 {
                     new PriceHistory
                     {
-                        LastDateChange = DateTimeOffset.Now.AddDays(-10),
+                        DateStart = DateTimeOffset.Now.AddDays(-10),
                         Price = 13.00
                     }
                 }
