@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StringCalculator.Domain\StringCalculator.Domain.csproj" />
+    <ProjectReference Include="..\RedPencil.Domain\RedPencil.Domain.csproj" />
   </ItemGroup>
 
 </Project>
