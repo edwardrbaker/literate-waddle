@@ -42,6 +42,7 @@ namespace RedPencil.Tests
         [Test]
         public void GetProducts_WhenMultipleProductsExist_ReturnAll()
         {
+            // arrange
             var product = new List<Product>
             {
                 new Product {
@@ -55,12 +56,27 @@ namespace RedPencil.Tests
                 }
             };
 
-            // arrange
             _productRepo.Setup(mock => mock.GetAllProducts()).Returns(product);
 
+            // act
             var products = _productService.GetProducts();
 
+            // assert
             Assert.AreEqual(2, products.Count);
+        }
+
+        [Test]
+        public void GetProductById_ReturnCorrectProduct()
+        {
+            var product = new List<Product>
+            {
+                new Product {Id = 1}
+            };
+            _productRepo.Setup(mock => mock.GetProductById(It.IsAny<int>())).Returns(product);
+
+            var product = _productService.GetProductById(1);
+
+            Assert.AreEqual(1, product.Id);
         }
     }
 }
