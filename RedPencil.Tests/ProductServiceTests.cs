@@ -18,21 +18,17 @@ namespace RedPencil.Tests
         }
 
         [Test]
-        public void IsProductRedPencil_DefaultIsTrue_ReturnsAnswer()
-        {
-            // arrange
-            var product = new Product { PriceHistories = new List<PriceHistory>() };
-
-            var isProductRedPencil = _productService.IsProductRedPencil(product);
-
-            Assert.AreEqual(true, isProductRedPencil);
-        }
-
-        [Test]
         public void IsProductRedPencil_PriceReducedByFivePercent_Yes()
         {
             // arrange
-            var product = new Product { OriginalPrice = 15.00, CurrentPrice = 14.00, PriceHistories = new List<PriceHistory>() };
+            var product = new Product 
+            { 
+                OriginalPrice = 15.00, 
+                CurrentPrice = 14.00, 
+                PriceHistories = new List<PriceHistory>(),
+                CurrentPriceDateStart = DateTimeOffset.Now,
+                CurrentPriceDateEnd = DateTimeOffset.Now.AddDays(5)
+            };
 
             var redPencil = _productService.IsProductRedPencil(product);
 
@@ -47,6 +43,8 @@ namespace RedPencil.Tests
             {
                 OriginalPrice = 15.00,
                 CurrentPrice = 14.25,
+                CurrentPriceDateStart = DateTimeOffset.Now,
+                CurrentPriceDateEnd = DateTimeOffset.Now.AddDays(5),
                 PriceHistories = new List<PriceHistory>
                 {
                     new PriceHistory
@@ -71,6 +69,8 @@ namespace RedPencil.Tests
             {
                 OriginalPrice = 15.00,
                 CurrentPrice = 14.25,
+                CurrentPriceDateStart = DateTimeOffset.Now,
+                CurrentPriceDateEnd = DateTimeOffset.Now.AddDays(5),
                 PriceHistories = new List<PriceHistory>
                 {
                     new PriceHistory
@@ -79,6 +79,25 @@ namespace RedPencil.Tests
                         Price = 13.00
                     }
                 }
+            };
+
+            // act
+            var redPencil = _productService.IsProductRedPencil(product);
+
+            Assert.AreEqual(false, redPencil);
+        }
+
+        [Test]
+        public void IsProductRedPencil_ExpirationOverThirtyDays_NotRedPencil()
+        {
+            // arrange
+            var product = new Product
+            {
+                OriginalPrice = 15.00,
+                CurrentPrice = 14.00,
+                CurrentPriceDateStart = DateTimeOffset.Now.AddDays(-10),
+                CurrentPriceDateEnd = DateTimeOffset.Now.AddDays(60),
+                PriceHistories = new List<PriceHistory>()
             };
 
             // act
