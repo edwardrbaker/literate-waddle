@@ -3,6 +3,7 @@ using RedPencil.Domain.Products;
 using RedPencil.Entity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RedPencil.Tests
 {
@@ -30,9 +31,9 @@ namespace RedPencil.Tests
                 CurrentPriceDateEnd = DateTimeOffset.Now.AddDays(5)
             };
 
-            var redPencil = _productService.IsProductRedPencil(product);
+            var updatedProduct = _productService.ProductWasUpdated(product);
 
-            Assert.AreEqual(true, redPencil);
+            Assert.AreEqual(true, updatedProduct.PriceHistories.FirstOrDefault().IsRedPencil);
         }
 
         [Test]
@@ -49,16 +50,22 @@ namespace RedPencil.Tests
                 {
                     new PriceHistory
                     {
-                        DateStart = DateTimeOffset.Now.AddDays(-30),
+                        DateStart = DateTimeOffset.Now.AddDays(-40),
+                        DateEnd = DateTimeOffset.Now.AddDays(-35),
                         Price = 13.00
                     }
                 }
             };
 
             // act
-            var redPencil = _productService.IsProductRedPencil(product);
+            var updatedProduct = _productService.ProductWasUpdated(product);
 
-            Assert.AreEqual(true, redPencil);
+            var mostRecentPriceHistory = updatedProduct
+                .PriceHistories
+                .OrderByDescending(x => x.DateStart)
+                .FirstOrDefault();
+
+            Assert.AreEqual(true, mostRecentPriceHistory.IsRedPencil);
         }
 
         [Test]
@@ -82,9 +89,9 @@ namespace RedPencil.Tests
             };
 
             // act
-            var redPencil = _productService.IsProductRedPencil(product);
+            var updatedProduct = _productService.ProductWasUpdated(product);
 
-            Assert.AreEqual(false, redPencil);
+            Assert.AreEqual(false, updatedProduct.PriceHistories.FirstOrDefault().IsRedPencil);
         }
 
         [Test]
@@ -101,9 +108,9 @@ namespace RedPencil.Tests
             };
 
             // act
-            var redPencil = _productService.IsProductRedPencil(product);
+            var updatedProduct = _productService.ProductWasUpdated(product);
 
-            Assert.AreEqual(false, redPencil);
+            Assert.AreEqual(false, updatedProduct.PriceHistories.FirstOrDefault().IsRedPencil);
         }
     }
 }

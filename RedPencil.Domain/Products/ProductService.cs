@@ -7,9 +7,35 @@ namespace RedPencil.Domain.Products
     public class ProductService : IProductService
     {
         // this method is called whenever a product's price is updated
-        // could be a service bus topic message or something
+        // could be from an API, or a service bus queue, or whatever
 
-        public bool IsProductRedPencil(Product product)
+        public Product ProductWasUpdated(Product product)
+        {
+            // CurrentPrice is the new adjusted price
+            // OriginalPrice is an original price, that (probably) never changes
+                // Look at me: I am the SME now
+            if (product.CurrentPrice < product.OriginalPrice)
+            {
+                var redPencil = IsProductRedPencil(product);
+
+                // create a new price history
+                product.PriceHistories.Add(new PriceHistory
+                {
+                    Price = product.CurrentPrice,
+                    DateStart = product.CurrentPriceDateStart,
+                    DateEnd = product.CurrentPriceDateEnd,
+                    IsRedPencil = redPencil
+                });
+            }
+
+            // a database layer would persist the updated product and the price history record here, probably
+
+            // return this back to the API, or whoever wanted the product updated
+            // for the sake of testing, return the value
+            return product;
+        }
+
+        private bool IsProductRedPencil(Product product)
         {
             // if the reduction is not between 5% and 30%, this cannot be a red pencil deal
             var reductionPercent = ((product.OriginalPrice - product.CurrentPrice) / product.OriginalPrice) * 100;
@@ -34,6 +60,6 @@ namespace RedPencil.Domain.Products
 
     public interface IProductService
     {
-        bool IsProductRedPencil(Product product);
+        Product ProductWasUpdated(Product product);
     }
 }
