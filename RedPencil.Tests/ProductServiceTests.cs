@@ -148,5 +148,43 @@ namespace RedPencil.Tests
             Assert.AreEqual(1, updatedProduct.PriceHistories.Count(p => p.IsActive));
             Assert.AreEqual(14.25, mostRecentPriceHistory.Price);
         }
+
+        [Test]
+        public void ProductWasUpdated_RedPencilIsAlreadyActive_ReducePriceButDoNotExtend()
+        {
+            var dateEnd = DateTimeOffset.Now.AddDays(5);
+
+            // arrange
+            var product = new Product
+            {
+                OriginalPrice = 15.00,
+                CurrentPrice = 12.00,
+                CurrentPriceDateStart = DateTimeOffset.Now,
+                CurrentPriceDateEnd = DateTimeOffset.Now.AddDays(15),
+                PriceHistories = new List<PriceHistory>
+                {
+                    new PriceHistory
+                    {
+                        DateStart = DateTimeOffset.Now.AddDays(-10),
+                        DateEnd = dateEnd,
+                        Price = 13.00,
+                        IsActive = true
+                    }
+                }
+            };
+
+            // act
+            var updatedProduct = _productService.ProductWasUpdated(product);
+
+            var priceHistory = updatedProduct
+                .PriceHistories
+                .FirstOrDefault(x => x.IsActive);
+
+            // assert
+            Assert.AreEqual(1, updatedProduct.PriceHistories.Count());
+            Assert.AreEqual(1, updatedProduct.PriceHistories.Count(p => p.IsActive));
+            Assert.AreEqual(12.00, priceHistory.Price);
+            Assert.AreEqual(dateEnd, priceHistory.DateEnd);
+        }
     }
 }
