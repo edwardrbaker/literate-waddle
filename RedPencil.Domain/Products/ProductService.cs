@@ -18,13 +18,17 @@ namespace RedPencil.Domain.Products
             {
                 var redPencil = IsProductRedPencil(product);
 
+                // inactivate any previous active price histories
+                product.PriceHistories.Where(ph => ph.IsActive).Select(s => { s.IsActive = false; return s; }).ToList();
+
                 // create a new price history
                 product.PriceHistories.Add(new PriceHistory
                 {
                     Price = product.CurrentPrice,
                     DateStart = product.CurrentPriceDateStart,
                     DateEnd = product.CurrentPriceDateEnd,
-                    IsRedPencil = redPencil
+                    IsRedPencil = redPencil,
+                    IsActive = true
                 });
             }
 

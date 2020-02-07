@@ -17,6 +17,7 @@ namespace RedPencil.Entity
     public class PriceHistory
     {
         public double Price { get; set; }
+        public bool IsActive { get; set; }
         public bool IsRedPencil { get; set; }
         public DateTimeOffset DateStart { get; set; }
         public DateTimeOffset? DateEnd { get; set; }
